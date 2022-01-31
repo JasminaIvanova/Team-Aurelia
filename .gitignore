@@ -40,6 +40,7 @@ bld/
 /Aurelia/Aurelia.app/appsettings.json
 appsettings.json
 *.appsettings.json
+*.json
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
