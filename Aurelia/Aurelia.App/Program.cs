@@ -5,24 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aurelia.App
 {
-    public class Program
+    public class Program 
     {
-        public static void Main(string[] args)
+        public static void Main(string[] args) 
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<AureliaUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<AureliaUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
             var app = builder.Build();
-
+            CreateUserAndRoles(app);
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -47,10 +45,33 @@ namespace Aurelia.App
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
+           
+            
             app.Run();
-        }
 
+        }
+        public static void CreateUserAndRoles(WebApplication app)
+
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                using (var aureliaDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>()) 
+                {
+                    if (!aureliaDbContext.Roles.Any()) 
+                    {
+                        IdentityRole superadmin = new IdentityRole { Name = "SuperAdmin", NormalizedName = "SUPERADMIN" };
+                        IdentityRole user = new IdentityRole { Name = "User", NormalizedName = "USER" };
+
+                        aureliaDbContext.Roles.Add(superadmin);
+                        aureliaDbContext.Roles.Add(user);
+                    }
+                    
+                    aureliaDbContext.SaveChanges();
+                }
+            
+            }   
+     
+        }
     }
 
 }
