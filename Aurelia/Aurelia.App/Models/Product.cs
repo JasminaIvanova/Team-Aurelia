@@ -7,7 +7,7 @@
         public string Description { get; set; }
 
         public string ProductTypeId { get; set; }
-        public ProductCategory ProductCategory { get; set; }
+        public ProductCategories ProductCategory { get; set; }
 
         public string Brand { get; set; }
     }

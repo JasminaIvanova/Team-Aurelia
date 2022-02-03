@@ -1,0 +1,37 @@
+﻿@using Aurelia.App.Models;
+@model IEnumerable<ProductCategories>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+    <div class="col-6">
+        <h2 style="color:#66fcf1">Product Categories</h2>
+    </div>
+</div>
+
+<div>
+    <table class="table" style"border="0">
+       
+        @foreach (var item in Model) 
+        {
+            <tr>
+                <td colspan="3">@item.Name</td>
+                <td>
+                    <div class="customBTN">
+                        <form asp-action="DeleteCategory" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn" style="background-color:#c5c6c7"><i class="fas fa-trash-alt"></i>Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+     <div class="col-6 text-right">
+        <a asp-action="CreateCategory" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Product Category </a>
+    </div>
+</div>
+<style>
+   body {background-color: #1f2833}
+</style>
+
+

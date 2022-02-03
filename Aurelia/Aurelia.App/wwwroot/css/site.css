@@ -8,6 +8,10 @@ html {
   }
 }
 
+.navbar-brand {
+    color: #094b65;
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -16,3 +20,34 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.customBTN {
+    text-align:right;
+}
+
+table tr:hover {
+    background-color: #c5c6c7;
+}
+table td {
+    color: white;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+
+

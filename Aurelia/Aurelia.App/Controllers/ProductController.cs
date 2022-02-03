@@ -1,6 +1,11 @@
-﻿namespace Aurelia.App.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Aurelia.App.Controllers
 {
-    public class ProductController
+    
+    public class ProductController: Controller
     {
+
     }
 }
