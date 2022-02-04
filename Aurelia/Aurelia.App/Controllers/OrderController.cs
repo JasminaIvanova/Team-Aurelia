@@ -1,6 +1,12 @@
-﻿namespace Aurelia.App.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Aurelia.App.Controllers
 {
-    public class OrderController
+    public class OrderController:Controller
     {
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

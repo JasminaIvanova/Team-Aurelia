@@ -10,5 +10,7 @@
         public ProductCategories ProductCategory { get; set; }
 
         public string Brand { get; set; }
+        public string Image { get; set; }   
+
     }
 }
