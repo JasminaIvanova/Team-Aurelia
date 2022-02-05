@@ -16,47 +16,40 @@ namespace Aurelia.App.Controllers
         {
             _aureliaDb = db;
         }
-        public ActionResult CreateProduct()
+        public IActionResult CreateProduct()
         {
            
             ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(),"Id", "Name");
-            return View();
+            return View("CreateProduct");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateProduct(Product product, IFormFile file)
         {
-            /*var product = _aureliaDb.Product.FirstOrDefault(c => c.Name == product.Name);
-            if (searchProduct != null)
-            {
-                ViewBag.message = "This product is already exist";
-                ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
-                ViewData["TagId"] = new SelectList(_db.SpecialTags.ToList(), "Id", "Name");
-                return View(product);
-            }*/
+            
+                //validaciq
+                string fileName = $"{Directory.GetCurrentDirectory()}{@"\Images"}" + "\\" + file.FileName;
+                using (FileStream fileStream = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(fileStream);
+                    fileStream.Flush();
+                }
+                product.Image = fileName;
+                
 
-            string fileName = $"{Directory.GetCurrentDirectory()}{@"\Files"}" + "\\" + file.FileName;
+                if (ModelState.IsValid) 
+                {
+                    _aureliaDb.Products.Add(product);
+                    await _aureliaDb.SaveChangesAsync();
+                    return View("CreateProduct");
+                }
+            return View("Index");
+
            
 
-            using (FileStream fileStream = System.IO.File.Create(fileName))
-            {
-                file.CopyTo(fileStream);
-                fileStream.Flush();
-            }
-            if (ModelState.IsValid)
-            {
-                product.Image = fileName;
-                _aureliaDb.Products.Add(product);
-                await _aureliaDb.SaveChangesAsync();
-                return RedirectToAction("CreateProduct");
-            }
-            return View("CreateProduct");
         }
-        //public IActionResult Index()
-        //{
-        //    return View(_aureliaDb.Products.ToList());
-        //}
+       
 
     }
 }

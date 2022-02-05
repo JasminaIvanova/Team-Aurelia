@@ -4,9 +4,18 @@
     ViewData["Title"] = "CreateProduct";
 }
 <h2 class="text-info">Create Product</h2>
-<form asp-action="Create Product" method="post"enctype="multipart/form-data">
+<form asp-action="CreateProduct" method="post"enctype="multipart/form-data">
     <div class="p-4 rounded border">
         <div asp-validation-summary="ModelOnly" class="text-danger">
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label>Product Name</label>
+            </div>
+            <div class="col-5" style="margin-bottom:1vw">
+                <input asp-for="ProductName" class="form-control"></input>
+            </div>
+            <span asp-validation-for="ProductName" class="text-danger"></span>
         </div>
         <div class="form-group row">
             <div class="col-2">
@@ -49,25 +58,24 @@
                 <label>Product Category</label>
             </div>
             <div class="col-5">
-                <select asp-for="ProductTypeId" asp-items="ViewBag.productCategory" class="form-control">
+                <select asp-for="ProductCategoryId" asp-items="ViewBag.productCategory" class="form-control">
                     <option value="" selected disabled hidden">---Choose category---</option>
                 </select>
             </div>
-            <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+            <span asp-validation-for="ProductCategoryId" class="text-danger"></span>
         </div>
 
          <div style="height:0px;overflow:hidden">
-            <input type="file" id="fileInput" name="fileInput" />
+            <input type="file" id="file" name="file" />
         </div>
         <button class="btn btn-secondary" style="background-color:#1f2833" type="button" onclick="chooseFile();">choose file</button>
         <script>
            function chooseFile() {
-              $("#fileInput").click();
+              $("#file").click();
            }
         </script>
         <div class="form-group">
             <input type="submit" style="margin-top: 1vw" class="btn btn-primary" value="Create"></input>
-            @*<a asp-action="Index" class="btn btn-success">List Products</a>*@
         </div>
     </div>
 </form>
