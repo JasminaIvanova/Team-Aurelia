@@ -1,5 +1,5 @@
 ﻿@using System.Collections
-@model Aurelia.App.Models.Product
+@model Aurelia.App.Models.ProductViewModel
 @{
     ViewData["Title"] = "CreateProduct";
 }
@@ -65,15 +65,14 @@
             <span asp-validation-for="ProductCategoryId" class="text-danger"></span>
         </div>
 
-         <div style="height:0px;overflow:hidden">
-            <input type="file" id="file" name="file" />
-        </div>
-        <button class="btn btn-secondary" style="background-color:#1f2833" type="button" onclick="chooseFile();">choose file</button>
-        <script>
-           function chooseFile() {
-              $("#file").click();
-           }
-        </script>
+         <div class="col-md-6">  
+                        <div class="form-group">  
+                            <div class="custom-file">  
+                                <input asp-for="ProductImage" class="custom-file-input" id="customFile">  
+                            </div>  
+                            <span asp-validation-for="ProductImage" class="text-danger"></span>  
+                        </div>  
+                    </div>  
         <div class="form-group">
             <input type="submit" style="margin-top: 1vw" class="btn btn-primary" value="Create"></input>
         </div>
