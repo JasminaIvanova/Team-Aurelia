@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Files\**" />
+    <Compile Remove="Images\**" />
     <Content Remove="Files\**" />
+    <Content Remove="Images\**" />
     <EmbeddedResource Remove="Files\**" />
+    <EmbeddedResource Remove="Images\**" />
     <None Remove="Files\**" />
+    <None Remove="Images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
