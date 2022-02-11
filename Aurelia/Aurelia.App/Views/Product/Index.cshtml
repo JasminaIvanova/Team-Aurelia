@@ -1,11 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Aurelia.App.Models;
+@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Admin | Product Manager";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<br /> <br />
+
+<div class="row">
+    <div class="col-8">
+        <h1 class="text-info">Product Manager</h1>
+    </div>
+     <div class="col-7 text-right" style="color:black">
+         <a asp-action="CreateProduct" class="btn btn-info"> <i class="fas fa-plus"></i>Create Product</a>
+     </div>
 </div>
-<style>
-    body
-</style>
+<br />
+<div>
+    <table class="table table-stripped-border" style="color:black">
+        <tr class="table-info" style="color:black">
+            <th>
+                @Html.DisplayNameFor(x => x.ProductCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.Quantity)
+            </th>
+        </tr>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td style="color:black">@p.ProductCategory.Name</td>
+                <td style="color:black">@p.ProductName</td>
+                <td style="color:black">@p.Brand</td>
+                <td style="color:black">@p.Price</td>
+                <td style="color:black">@p.Quantity</td>
+                <td>
+                    <a asp-action="EditProduct" asp-route-id="@p.Id" class="btn btn-info">Edit</a> 
+                    <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-info">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-info">Delete</a> 
+                </td>
+            </tr>
+        }
+    </table>
+</div>
