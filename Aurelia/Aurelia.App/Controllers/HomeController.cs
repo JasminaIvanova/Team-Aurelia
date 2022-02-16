@@ -1,8 +1,10 @@
 ﻿using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Dynamic;
 
 namespace Aurelia.App.Controllers
 {
@@ -19,7 +21,12 @@ namespace Aurelia.App.Controllers
 
         public IActionResult Index()
         {
-            return View(_aureliaDB.Products.Include(c => c.ProductCategory).ToList());
+            dynamic MyModel = new ExpandoObject();
+            MyModel.ProductCategories = _aureliaDB.ProductCategories.ToList();
+            MyModel.Products = _aureliaDB.Products.ToList();
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["products"] = _aureliaDB.Products.ToList();
+            return View(_aureliaDB.Products.ToList());
         }
 
         public IActionResult Privacy()

@@ -20,7 +20,7 @@ namespace Aurelia.App.Models
         [Required(ErrorMessage = "Please choose category")]
         public string? ProductCategoryId { get; set; }
 
-        public virtual ProductCategories? ProductCategory { get; set; }
+        public virtual ProductCategory? ProductCategory { get; set; }
 
         [Required(ErrorMessage = "Please enter Product Brand")]
         public string Brand { get; set; }

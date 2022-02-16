@@ -1,7 +1,5 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-@using Aurelia.App.Models;
-@model IEnumerable<Product>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,10 +44,10 @@
                                         </li>
                                     }
 	                            </ul>
-                                @foreach (var item in Model)
+                                @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
                                 {
                                     <li class="nav-item" >
-                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-area="" asp-controller="Home" asp-action="Detail">@item.ProductCategory.Name</a>
+                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-area="" asp-controller="ProductCategory" asp-action="Index">@item.Name</a>
                                     </li>
                                 }
                                 

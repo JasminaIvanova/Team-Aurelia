@@ -27,7 +27,7 @@ namespace Aurelia.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateCategory(ProductCategories productCategory)
+        public async Task<ActionResult> CreateCategory(ProductCategory productCategory)
         {
             if (ModelState.IsValid)
             {

@@ -20,16 +20,15 @@ namespace Aurelia.App.Controllers
             _aureliaDb = db;
             _webHostEnvironment = webHostEnvironment;
         }
-
         public IActionResult Index ()
         {
-            ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             return View(_aureliaDb.Products.Include(x => x.ProductCategory).ToList());
         }
         public IActionResult CreateProduct()
         {
-           
-            ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(),"Id", "Name");
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(),"Id", "Name");
             return View();
         }
 
@@ -57,13 +56,14 @@ namespace Aurelia.App.Controllers
                 await _aureliaDb.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View("Product");
+            return View("Index");
 
         }
 
         public async Task<IActionResult> EditProduct(string id)
         {
-            ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             Product product = await _aureliaDb.Products.FindAsync(id);
             ProductViewModel productViewModel = new ProductViewModel()
             {
@@ -119,7 +119,8 @@ namespace Aurelia.App.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
-            ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             if (id == null)
             {
                 return NotFound();
@@ -135,7 +136,8 @@ namespace Aurelia.App.Controllers
         }
         public async Task<IActionResult> Delete(string id)
         {
-            ViewData["productCategory"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             if (id == null)
             {
                 return NotFound();

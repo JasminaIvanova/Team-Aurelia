@@ -11,7 +11,7 @@ namespace Aurelia.App.Models
 
         public string? ProductCategoryId { get; set; }
 
-        public virtual ProductCategories? ProductCategory { get; set; }
+        public virtual ProductCategory? ProductCategory { get; set; }
 
         public string Brand { get; set; }
         public string? Image { get; set; }   

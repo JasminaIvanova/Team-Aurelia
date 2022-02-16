@@ -169,7 +169,7 @@ namespace Aurelia.App.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Aurelia.App.Models.ProductCategories", b =>
+            modelBuilder.Entity("Aurelia.App.Models.ProductCategory", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -376,7 +376,7 @@ namespace Aurelia.App.Migrations
 
             modelBuilder.Entity("Aurelia.App.Models.Product", b =>
                 {
-                    b.HasOne("Aurelia.App.Models.ProductCategories", "ProductCategory")
+                    b.HasOne("Aurelia.App.Models.ProductCategory", "ProductCategory")
                         .WithMany()
                         .HasForeignKey("ProductCategoryId");
 
