@@ -21,9 +21,6 @@ namespace Aurelia.App.Controllers
 
         public IActionResult Index()
         {
-            dynamic MyModel = new ExpandoObject();
-            MyModel.ProductCategories = _aureliaDB.ProductCategories.ToList();
-            MyModel.Products = _aureliaDB.Products.ToList();
             ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
             ViewData["products"] = _aureliaDB.Products.ToList();
             return View(_aureliaDB.Products.ToList());

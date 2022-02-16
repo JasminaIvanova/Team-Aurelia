@@ -18,10 +18,14 @@ namespace Aurelia.App.Controllers
         
         public IActionResult Index()
         {
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["products"] = _aureliaDb.Products.ToList();
             return View(_aureliaDb.ProductCategories.ToList());
         }
         public ActionResult CreateCategory()
         {
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["products"] = _aureliaDb.Products.ToList();
             return View();
         }
 
@@ -40,6 +44,8 @@ namespace Aurelia.App.Controllers
 
         public async Task<ActionResult> DeleteCategory(string id)
         {
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["products"] = _aureliaDb.Products.ToList();
             var category = await _aureliaDb.ProductCategories.FindAsync(id);
 
             if (category == null)
