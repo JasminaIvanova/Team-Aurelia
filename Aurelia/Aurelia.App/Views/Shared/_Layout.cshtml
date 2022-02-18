@@ -47,12 +47,11 @@
                                 @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
                                 {
                                     <li class="nav-item" >
-                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-area="" asp-controller="ProductCategory" asp-action="Index">@item.Name</a>
+                                        <a class="btn btn-secondary" name = "btncat" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
+                                        </a>    
                                     </li>
                                 }
-                                
                          </li>
-                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

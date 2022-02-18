@@ -3,6 +3,8 @@ using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aurelia.App.Controllers
 {
@@ -62,6 +64,7 @@ namespace Aurelia.App.Controllers
 
             }
         }
+       
 
     }
 }
