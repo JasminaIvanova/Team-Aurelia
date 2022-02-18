@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -28,18 +30,21 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
         private readonly UserManager<AureliaUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<AureliaUser> _userStore;
+        private readonly ApplicationDbContext _aureliaDB;
       
 
         public RegisterModel(
             UserManager<AureliaUser> userManager,
             IUserStore<AureliaUser> userStore,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<AureliaUser> signInManager)
+            SignInManager<AureliaUser> signInManager,
+            ApplicationDbContext aureliaDB)
         {
             _userManager = userManager;
             _userStore = userStore;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _aureliaDB = aureliaDB;
            
         }
 
@@ -85,11 +90,17 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(){}
+        public async Task OnGetAsync()
+        {
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
+
             if (ModelState.IsValid)
             {
                 AureliaUser user = new AureliaUser();

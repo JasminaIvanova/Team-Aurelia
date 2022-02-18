@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Aurelia.App.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Aurelia.App.Data;
 
 namespace Aurelia.App.Areas.Identity.Pages.Account
 {
@@ -22,11 +24,13 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AureliaUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _aureliaDB;
 
-        public LoginModel(SignInManager<AureliaUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<AureliaUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext aureliaDB)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _aureliaDB = aureliaDB;
         }
 
         /// <summary>
@@ -86,6 +90,8 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -103,6 +109,8 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
