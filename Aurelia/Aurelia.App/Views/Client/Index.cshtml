@@ -8,17 +8,20 @@
 <div class = "row">
     @foreach (var product in Model)
     {
-        <div class = "col-4" >
-            <div class ="card mb-4" style="background-color:#1f2833;">
-                <div class ="card-header" >
+        <div class = "col-4">
+            <div class ="card mb-4 border-0" style=" height:400px; width: 190px; text-align:center;">
+                <img src="~/images/@product.Image" alt="Card Image" class="" style="min-width:100%; width:auto;height: 100%; object-fit: contain"/>
+                 <div class ="card-header" >
                     <h4 class="my-0 font-weight-normal">
-                        <label style="font-size: 23px;color:#66fcf1">@product.ProductName</label>
+                        <label style="font-size: 18px;color:black;">@product.ProductName</label>
                     </h4>
                 </div>
-                <img src="~/images/@product.Image" alt="Card Image" class="card-img-top" style="height:400px;" />
-                 <h5 class="my-0 font-weight-normal">
-                        <label style="font-size: 20px; color:#66fcf1">Price: @product.Price.ToString("0.00")</label>
+                <h5 class="my-0 font-weight-normal">
+                        <label style="font-size: 18px; color:black">Price: @product.Price.ToString("0.00")</label>
                  </h5>
+                  <div>
+                    <button id="buy" type="submit" style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary">Buy</button>
+                 </div>
             </div>
             </div>
     }
