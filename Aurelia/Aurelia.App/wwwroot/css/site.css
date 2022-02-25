@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: -20px;
 }
 
 
@@ -51,4 +51,20 @@ a {
 
 .option {
     background-color:red;
+}
+
+.col-xs-5 {
+    /*width: 41.66666667%;*/
+    /*background-color: aqua;*/
+    margin-left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    padding: 0;
+}
+.customH1 {
+    
+    position: absolute;
+    top: 15%;
 }

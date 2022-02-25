@@ -20,7 +20,7 @@
                         <label style="font-size: 18px; color:black">Price: @product.Price.ToString("0.00")</label>
                  </h5>
                   <div>
-                    <button id="buy" type="submit" style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary">Buy</button>
+                    <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
                  </div>
             </div>
             </div>

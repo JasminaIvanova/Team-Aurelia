@@ -1,0 +1,8 @@
+﻿@model Aurelia.App.Models.Product
+@{
+    ViewData["Title"] = "buyProduct Page";
+}
+<img src="~/images/@Model.Image" style="max-width:40%; width:auto;height: 40%; object-fit: contain"/>
+<div class="col-xs-5 flex">
+    <h1 class="customH1" style="font-family:'Raleway'; font-size: 2em; font-weight: bold">@Model.ProductName</h1>
+</div>

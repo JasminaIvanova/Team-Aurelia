@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AureliaUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -47,12 +49,19 @@
                                 @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
                                 {
                                     <li class="nav-item" >
-                                        <a class="btn btn-secondary" name = "btncat" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
+                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
                                         </a>    
                                     </li>
                                 }
                          </li>
                     </ul>
+                    @if (SignInManager.IsSignedIn(User)){
+                        <ul class="navbar-nav">
+                            <li class="nav-item" >
+                                <a class="nav-link text-dark" style="font-size:20px" asp-controller="Order" asp-action="Index"><i class="fas fa-shopping-cart"> | Price: 0,00</i></a>    
+                            </li>
+                        </ul>
+                    }
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -64,11 +73,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Aurelia.App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @*<footer>
+        <div class="container">&copy; 2022 - Aurelia.App
         </div>
-    </footer>
+    </footer>*@
     
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
