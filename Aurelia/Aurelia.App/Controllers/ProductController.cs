@@ -60,6 +60,11 @@ namespace Aurelia.App.Controllers
 
         }
 
+        private string getImageName(string imagePath)
+        {
+            var imagePathArr = imagePath.Split("_");
+            return imagePathArr[imagePathArr.Length - 1];
+        }
         public async Task<IActionResult> EditProduct(string id)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
@@ -101,7 +106,11 @@ namespace Aurelia.App.Controllers
                     product.Brand = productViewModel.Brand;
                     product.ProductCategory = productViewModel.ProductCategory;
                     product.ProductCategoryId = productViewModel.ProductCategoryId;
-
+                    product.Image = productViewModel.ImagePath == null ? UploadedFile(productViewModel) : 
+                        (productViewModel.ProductImage == null ? productViewModel.ImagePath : (getImageName(productViewModel.ImagePath)
+                        .ToLower()
+                        .Equals(productViewModel.ProductImage.FileName.ToLower()) ? productViewModel.ImagePath : 
+                        UploadedFile(productViewModel)));
                     _aureliaDb.Update(product);
                     await _aureliaDb.SaveChangesAsync();
                 }

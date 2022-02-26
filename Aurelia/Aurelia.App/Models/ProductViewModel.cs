@@ -26,5 +26,6 @@ namespace Aurelia.App.Models
         public string Brand { get; set; }
         [Required(ErrorMessage = "Please choose Product Image")]
         public IFormFile ProductImage { get; set; }
+        public string? ImagePath { get; set; }
     }
 }
