@@ -17,7 +17,7 @@
                     </h4>
                 </div>
                 <h5 class="my-0 font-weight-normal">
-                        <label style="font-size: 18px; color:black">Price: @product.Price.ToString("0.00")</label>
+                        <label style="font-size: 18px; color:black">Price: $@product.Price.ToString("0.00")</label>
                  </h5>
                   <div>
                     <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
