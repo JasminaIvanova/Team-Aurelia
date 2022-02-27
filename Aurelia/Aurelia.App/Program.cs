@@ -16,6 +16,10 @@ namespace Aurelia.App
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
             builder.Services.AddDefaultIdentity<AureliaUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
@@ -45,8 +49,9 @@ namespace Aurelia.App
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-           
-            
+
+            app.UseSession();
+
             app.Run();
 
         }

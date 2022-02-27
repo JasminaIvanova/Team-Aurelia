@@ -20,10 +20,18 @@ namespace Aurelia.App.Controllers
             _aureliaDb = db;
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult Index ()
+        public async Task<IActionResult> Index(string searchString)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
-            return View(_aureliaDb.Products.Include(x => x.ProductCategory).ToList());
+            var products = from p in _aureliaDb.Products
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.ProductName!.Contains(searchString));
+            }
+
+            return View(await products.ToListAsync());
         }
         public IActionResult CreateProduct()
         {

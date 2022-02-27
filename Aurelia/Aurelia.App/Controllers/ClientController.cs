@@ -25,6 +25,22 @@ namespace Aurelia.App.Controllers
             return View(_aureliaDb.Products.Where(x => x.ProductCategoryId == id).ToList());
             
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string id, string searchString)
+        {
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            var products = from p in _aureliaDb.Products
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.ProductName!.Contains(searchString) && s.ProductCategoryId == id);
+            }
+
+            return View(await products.ToListAsync());
+        }
         public async Task<IActionResult> BuyProduct(string id)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
