@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "My Cart";
+}
+<div class="row">
+    <div class="col-8">
+        <h1 class="text-info">My Cart</h1>
+    </div>
+</div>
+<br />
+<div>
+    <table class="table table-stripped-border" style="color:black">
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Sub Total</th>
+            <th>Option</th>
+        </tr>
+        @foreach (var item in ViewBag.cart)
+        {
+            <tr>
+                <td style="color:black">@item.Product.ProductName</td>
+                <td style="color:black"><img src="~/images/@item.Product.Image" width="80" /> </td>
+                <td style="color:black">@item.Product.Price.ToString("0.00")</td>
+                <td style="color:black">@item.quantity</td>
+                <td style="color:black">@((item.Product.Price * item.quantity).ToString("0.00"))</td>
+                <td><a class="btn btn-info" asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Remove</a></td>
+            </tr>
+        }
+    </table>
+    <a class="btn btn-info" asp-controller="home" asp-action="index">Continue Shopping</a>
+    <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
+            Total: @ViewBag.total.ToString("0.00")
+        </div>
+</div>
