@@ -2,6 +2,7 @@
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Linq;
 
 namespace Aurelia.App.Controllers
@@ -19,65 +20,121 @@ namespace Aurelia.App.Controllers
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
-            var cart = SessionExtension.Get<List<ShoppingCartItem>>(HttpContext.Session, "cart");
-                ViewBag.cart = cart;
-            ViewBag.total = cart.Sum(item => item.Product.Price * item.quantity);
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
+            {
+                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+                if (dataCart.Count > 0)
+                {
+                    ViewBag.carts = dataCart;
+                    return View();
+                }
+            }
+            if (cart == null)
+            {
+                ViewBag.carts = new List<ShoppingCartItem>();
+            }
             return View();
         }
 
         [Route("Buy/{id}")]
-        public IActionResult Buy(string id)
+        public IActionResult addCart(string id)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
-            if (SessionExtension.Get<List<ShoppingCartItem>>(HttpContext.Session, "cart") == null)
+
+            var cart = HttpContext.Session.GetString("cart");//get key cart
+            if (cart == null)
             {
-                List<ShoppingCartItem> cart = new List<ShoppingCartItem>();
-                cart.Add(new ShoppingCartItem { Product = _aureliaDb.Products.Find(id), quantity = 1 });
-                SessionExtension.Set(HttpContext.Session, "cart", cart);
+                var product = _aureliaDb.Products.Find(id);
+                List<ShoppingCartItem> listCart = new List<ShoppingCartItem>()
+               {
+                   new ShoppingCartItem
+                   {
+                       Product = product,
+                       quantity = 1
+                   }
+               };
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(listCart));
+
             }
             else
             {
-                List<ShoppingCartItem> cart = SessionExtension.Get<List<ShoppingCartItem>>(HttpContext.Session, "cart");
-                int index = isExist(id);
-                if (index != -1)
+                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+                bool check = true;
+                for (int i = 0; i < dataCart.Count; i++)
                 {
-                    cart[index].quantity++;
+                    if (dataCart[i].Product.Id == id)
+                    {
+                        dataCart[i].quantity++;
+                        check = false;
+                    }
                 }
-                else
+                if (check)
                 {
-                    cart.Add(new ShoppingCartItem { Product = _aureliaDb.Products.Find(id), quantity = 1 });
+                    dataCart.Add(new ShoppingCartItem
+                    {
+                        Product = _aureliaDb.Products.Find(id),
+                        quantity = 1
+                    });
                 }
-                SessionExtension.Set(HttpContext.Session, "cart", cart);
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
             }
-            return RedirectToAction("Index");
+
+            return RedirectToAction(nameof(Index));
+
         }
 
-        [Route("Remove/{id}")]
-        public IActionResult Remove(string id)
+        [HttpPost]
+        public IActionResult Update(string id, int quantity)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
-            List<ShoppingCartItem> cart = SessionExtension.Get<List<ShoppingCartItem>>(HttpContext.Session, "cart");
-            int index = isExist(id);
-            cart.RemoveAt(index);
-            SessionExtension.Set(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Index");
-        }
-
-        private int isExist(string id)
-        {
-            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
-            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
-            List<ShoppingCartItem> cart = SessionExtension.Get<List<ShoppingCartItem>>(HttpContext.Session, "cart");
-            for (int i = 0; i < cart.Count; i++)
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
             {
-                if (cart[i].Product.Id.Equals(id))
+                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+                if (quantity > 0)
                 {
-                    return i;
+                    for (int i = 0; i < dataCart.Count; i++)
+                    {
+                        if (dataCart[i].Product.Id == id)
+                        {
+                            dataCart[i].quantity = quantity;
+                        }
+                    }
+
+
+                    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
                 }
+                var cart2 = HttpContext.Session.GetString("cart");
+                return Ok(quantity);
             }
-            return -1;
+            return BadRequest();
+
+        }
+
+        [Route("Delete/{id}")]
+        public IActionResult Delete(string id)
+        {
+            ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
+            ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
+            {
+                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    if (dataCart[i].Product.Id == id)
+                    {
+                        dataCart.RemoveAt(i);
+                    }
+
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
 
     }
