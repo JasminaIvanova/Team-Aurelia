@@ -27,23 +27,25 @@ namespace Aurelia.App.Controllers
                 if (dataCart.Count > 0)
                 {
                     ViewBag.carts = dataCart;
+                    ViewBag.total = dataCart.Sum(item => item.Product.Price * item.quantity);
                     return View();
                 }
             }
             if (cart == null)
             {
                 ViewBag.carts = new List<ShoppingCartItem>();
+                ViewBag.total = 0;
             }
             return View();
         }
 
-        [Route("Buy/{id}")]
-        public IActionResult addCart(string id)
+        [Route("Add/{id}")]
+        public IActionResult Add(string id)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
 
-            var cart = HttpContext.Session.GetString("cart");//get key cart
+            var cart = HttpContext.Session.GetString("cart");
             if (cart == null)
             {
                 var product = _aureliaDb.Products.Find(id);

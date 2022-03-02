@@ -53,13 +53,13 @@
         {
             string _quantity = "_quantity" + item.Product.Id;
             cId++;
-            decimal total = item.Product.Price * item.quantity;
+            decimal subTotal = item.Product.Price * item.quantity;
             <tr>
                 <td style="color:black">@item.Product.ProductName</td>
                 <td style="color:black"><img src="~/images/@item.Product.Image" width="80" /> </td>
-                <td style="color:black">@item.Product.Price.ToString("0.00")</td>
+                <td style="color:black">@item.Product.Price.ToString("$0.00")</td>
                 <td style="color:black"><input type="number" class="@_quantity" value="@item.quantity"/></td>
-                <td style="color:black">@total.ToString("0.00")</td>
+                <td style="color:black">@subTotal.ToString("$0.00")</td>
                 <td><a class="btn btn-info, Update" data-id="@item.Product.Id">Update</a></td>
                 <td><a class="btn btn-info" asp-controller="cart" asp-action="Delete" asp-route-id="@item.Product.Id">Delete</a></td>
             </tr>
@@ -67,4 +67,8 @@
         }
     </table>
     <a class="btn btn-info" asp-controller="home" asp-action="index">Continue Shopping</a>
+    <a class="btn btn-info" asp-controller="order" asp-action="Checkout">Checkout</a>
+    <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
+            Total: @ViewBag.total.ToString("$0.00")
+        </div>
 </div>

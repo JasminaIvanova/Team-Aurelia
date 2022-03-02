@@ -1,0 +1,111 @@
+﻿@model Aurelia.App.Models.Order
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".Update").click(function (event) {
+            event.preventDefault();
+            var quantity = $("._quantity" + $(this).attr("data-id")).val();
+            console.log(quantity);
+            $.ajax({
+                type: "POST",
+                url:"@Url.Action("Update","Cart")",
+                data: {
+                    id: $(this).attr("data-id"),
+                    quantity:quantity
+                }
+            });
+        });
+    });
+</script>
+<h2 class="text-info">Checkout</h2>
+<form asp-action="" method="post"enctype="multipart/form-data">
+    <div class="p-4 rounded border">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label>Email</label>
+            </div>
+            <div class="col-5" style="margin-bottom:1vw">
+                <input asp-for="Email" class="form-control"></input>
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PhoneNumber"></label>
+            </div>
+            <div class="col-5" style="margin-bottom:1vw">
+                <input asp-for="PhoneNumber" class="form-control"></input>
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+         <div class="form-group row" >
+            <div class="col-2">
+                <label asp-for="Address"></label>
+            </div>
+            <div class="col-5" style="margin-bottom:1vw">
+                <input asp-for="Address" class="form-control"/>
+            </div>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+         <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="PaymentMethod"></label>
+            </div>
+            <div class="col-5" style="margin-bottom:1vw">
+                <input asp-for="PaymentMethod" class="form-control" />
+            </div>
+            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+        </div>
+         <div class="form-group row" style="margin-bottom:1vw">
+            <div class="col-2">
+                <label asp-for="DeliveryMethod"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="DeliveryMethod" class="form-control">
+            </div>
+            <span asp-validation-for="DeliveryMethod" class="text-danger"></span>
+        </div>
+</form>
+
+<table class="table table-stripped-border" style="color:black">
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Sub Total</th>
+            <th>Option</th>
+        </tr>
+        @{
+            int cId = 0;
+        foreach (var item in ViewBag.carts)
+        {
+            string _quantity = "_quantity" + item.Product.Id;
+            cId++;
+            decimal subTotal = item.Product.Price * item.quantity;
+            <tr>
+                <td style="color:black">@item.Product.ProductName</td>
+                <td style="color:black"><img src="~/images/@item.Product.Image" width="80" /> </td>
+                <td style="color:black">@item.Product.Price.ToString("$0.00")</td>
+                <td style="color:black"><input type="number" class="@_quantity" value="@item.quantity"/></td>
+                <td style="color:black">@subTotal.ToString("$0.00")</td>
+                <td><a class="btn btn-info, Update" data-id="@item.Product.Id">Update</a></td>
+                <td><a class="btn btn-info" asp-controller="cart" asp-action="Delete" asp-route-id="@item.Product.Id">Delete</a></td>
+            </tr>
+        }
+        }
+    </table>
+    <input class="btn btn-info" type="submit" value="Place Order"></input>
+    <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
+            Total: @ViewBag.total.ToString("$0.00")
+        </div>
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
