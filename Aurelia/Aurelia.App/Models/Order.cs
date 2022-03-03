@@ -16,10 +16,14 @@ namespace Aurelia.App.Models
         [EmailAddress]
         public string Email { get; set; }
         [Required]
+        [Display(Name = "Phone Number:")]
         public string PhoneNumber { get; set; }
+        [Display(Name = "Payment Method:")]
         public string PaymentMethod { get; set; }
         [Required]
+        [Display(Name = "Address:")]
         public string Address { get; set; }
+        [Display(Name = "Delivery Method:")]
         public string DeliveryMethod { get; set; }
 
         public virtual List<OrderDetails> OrderDetails { get; set; }

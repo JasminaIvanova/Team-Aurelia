@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Aurelia.App.Controllers
 {
@@ -17,10 +18,13 @@ namespace Aurelia.App.Controllers
             _aureliaDb = aureliaDb;
             _userManager = userManager;
         }
-        public IActionResult Index()
+
+        [Route("Index")]
+        public IActionResult Index(string id)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
+            ViewData["orders"] = _aureliaDb.Orders.ToList();
             return View();
         }
 
@@ -77,7 +81,7 @@ namespace Aurelia.App.Controllers
             await _aureliaDb.SaveChangesAsync();
             List<ShoppingCartItem> cart2 = new List<ShoppingCartItem>();
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart2));
-            return View();
+            return View("Index");
         }
 
         public string GetOrderNumber()

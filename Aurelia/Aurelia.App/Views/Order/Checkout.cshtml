@@ -16,6 +16,9 @@
                 data: {
                     id: $(this).attr("data-id"),
                     quantity:quantity
+                },
+                success: function (result) {
+                    window.location.href = '@Url.Action("Checkout")';
                 }
             });
         });
@@ -96,12 +99,12 @@
                 <td style="color:black"><input type="number" class="@_quantity" value="@item.quantity"/></td>
                 <td style="color:black">@subTotal.ToString("$0.00")</td>
                 <td><a class="btn btn-info, Update" data-id="@item.Product.Id">Update</a></td>
-                <td><a class="btn btn-info" asp-controller="cart" asp-action="Delete" asp-route-id="@item.Product.Id">Delete</a></td>
             </tr>
         }
         }
     </table>
-    <input class="btn btn-info" type="submit" value="Place Order"></input>
+    <a class="btn btn-info" asp-controller="Cart" asp-action="Index"> Back to Cart</a>
+    <input class="btn btn-info" type="submit" value="Place Order"/>
     <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
             Total: @ViewBag.total.ToString("$0.00")
         </div>
