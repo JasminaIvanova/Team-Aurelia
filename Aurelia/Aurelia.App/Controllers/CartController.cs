@@ -133,10 +133,19 @@ namespace Aurelia.App.Controllers
                 {
                     if (dataCart[i].Product.Id == id)
                     {
-                        dataCart.RemoveAt(i);
+                        dataCart.Remove(dataCart[i]);
+                        if (dataCart.Count == 0)
+                        {
+                            HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+                            cart = null;
+                            ViewBag.carts = new List<ShoppingCartItem>();
+                            ViewBag.total = 0;
+                            return View("/Views/Home/Index.cshtml");
+                        }
                     }
 
                 }
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

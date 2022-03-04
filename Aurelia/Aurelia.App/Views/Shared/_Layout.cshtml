@@ -4,16 +4,16 @@
 @{
     var data = Context.Session.GetString("cart");
 
-    int coutCart = 0;
+    int countCart = 0;
     if (data == null)
     {
-        coutCart = 0;
+        countCart = 0;
     }
     else
     {
         var data2 = Context.Session.GetString("cart");
         List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(data2);
-        coutCart = dataCart.Select(x => x.Product).Count();
+        countCart = dataCart.Select(x => x.Product).Count();
 
     }
 
@@ -80,7 +80,7 @@
                     @if (SignInManager.IsSignedIn(User)){
                         <ul class="navbar-nav">
                             <li class="nav-item" >
-                                <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | @coutCart</i></a>    
+                                <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | @countCart</i></a>    
                             </li>
                         </ul>
                     }
