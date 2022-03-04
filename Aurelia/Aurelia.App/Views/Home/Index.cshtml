@@ -1,9 +1,28 @@
-﻿
+﻿@using Aurelia.App.Models;
+@model List<Product>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <br/> <br/>
 <div class = "row">
-   
+    @foreach (var product in Model)
+    {
+        <div class = "col-2">
+            <div class ="card mb-4 border-0 " style=" height:400px; width: 190px; text-align:center">
+                <img src="~/images/@product.Image" alt="Card Image" class="" style="min-width:100%; width:auto;height: 100%; object-fit: contain"/>
+                 <div class ="card-header" >
+                    <h4 class="my-0 font-weight-normal">
+                        <label style="font-size: 18px;color:black;">@product.ProductName</label>
+                    </h4>
+                </div>
+                <h5 class="my-0 font-weight-normal">
+                        <label style="font-size: 18px; color:black">Price: $@product.Price.ToString("0.00")</label>
+                 </h5>
+                  <div>
+                    <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
+                 </div>
+            </div>
+            </div>
+    }
 </div>

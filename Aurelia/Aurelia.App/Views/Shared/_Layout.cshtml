@@ -15,7 +15,7 @@
         List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(data2);
         foreach (var item in dataCart)
         {
-            decimal value = decimal.Add(sumCart, item.Product.Price);
+            decimal value = decimal.Add(sumCart, (item.Product.Price*item.quantity));
             sumCart = value;
         }
     }
@@ -52,7 +52,7 @@
 		                            <i class="fas fa-bars" style="color:#66fcf1"></i>
 	                             </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-	                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">
+	                                <li><a class="dropdown-item"  asp-controller="Home" asp-action="Index">
                                        Home
                                     </a></li>
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))

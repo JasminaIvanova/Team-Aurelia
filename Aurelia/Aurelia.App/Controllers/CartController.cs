@@ -101,9 +101,10 @@ namespace Aurelia.App.Controllers
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
+            List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
             if (cart != null)
             {
-                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+
                 if (quantity > 0)
                 {
                     for (int i = 0; i < dataCart.Count; i++)
@@ -155,6 +156,7 @@ namespace Aurelia.App.Controllers
             }
             return RedirectToAction("Index");
         }
+         
 
     }
 }

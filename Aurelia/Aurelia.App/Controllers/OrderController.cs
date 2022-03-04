@@ -51,7 +51,7 @@ namespace Aurelia.App.Controllers
                     foreach (var item in dataCart)
                     {
                         Product product = _aureliaDb.Products.FirstOrDefault(x => x.Id == item.Product.Id);
-                        product.Quantity -= 1;
+                        product.Quantity -= item.quantity;
                         _aureliaDb.Update(product);
                         _aureliaDb.SaveChanges();
                     }

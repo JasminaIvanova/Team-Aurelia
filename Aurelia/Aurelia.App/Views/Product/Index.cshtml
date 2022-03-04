@@ -17,8 +17,10 @@
 <br />
 <form asp-controller="Product" asp-action="Index">
     <p>
-        <input type="text" name="searchString" />
-        <input type="submit" value="Search" />
+        <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; color:black;" placeholder="Search..."/>
+        <button type="submit" class="btn btn-info">
+            <i class="fas fa-search" style="color:black"></i>
+        </button>
     </p>
 </form>
 <div>
