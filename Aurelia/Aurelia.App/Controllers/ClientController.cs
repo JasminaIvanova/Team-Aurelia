@@ -31,12 +31,11 @@ namespace Aurelia.App.Controllers
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
-            var products = from p in _aureliaDb.Products
-                           select p;
+            var products = from p in _aureliaDb.Products select p;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.ProductName!.Contains(searchString) && s.ProductCategoryId == id);
+                products = products.Where(s => s.ProductName!.Contains(searchString));
             }
 
             return View(await products.ToListAsync());
