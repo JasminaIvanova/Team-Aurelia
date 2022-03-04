@@ -4,17 +4,20 @@
 @{
     var data = Context.Session.GetString("cart");
 
-    int countCart = 0;
+    decimal sumCart = .00m;
     if (data == null)
     {
-        countCart = 0;
+        sumCart = .00m;
     }
     else
     {
         var data2 = Context.Session.GetString("cart");
         List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(data2);
-        countCart = dataCart.Select(x => x.Product).Count();
-
+        foreach (var item in dataCart)
+        {
+            decimal value = decimal.Add(sumCart, item.Product.Price);
+            sumCart = value;
+        }
     }
 
 }
@@ -80,7 +83,7 @@
                     @if (SignInManager.IsSignedIn(User)){
                         <ul class="navbar-nav">
                             <li class="nav-item" >
-                                <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | @countCart</i></a>    
+                                <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | $@sumCart.ToString("0.00")</i></a>    
                             </li>
                         </ul>
                     }
