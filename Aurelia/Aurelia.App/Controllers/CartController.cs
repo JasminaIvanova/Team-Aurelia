@@ -35,6 +35,7 @@ namespace Aurelia.App.Controllers
             {
                 ViewBag.carts = new List<ShoppingCartItem>();
                 ViewBag.total = 0;
+                return View("/Views/Home/Index.cshtml");
             }
             return View();
         }
@@ -49,6 +50,7 @@ namespace Aurelia.App.Controllers
             if (cart == null)
             {
                 var product = _aureliaDb.Products.Find(id);
+                
                 List<ShoppingCartItem> listCart = new List<ShoppingCartItem>()
                {
                    new ShoppingCartItem
@@ -78,6 +80,7 @@ namespace Aurelia.App.Controllers
                     {
                         Product = _aureliaDb.Products.Find(id),
                         quantity = 1
+                        
                     });
                 }
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));

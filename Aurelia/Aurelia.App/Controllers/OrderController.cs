@@ -13,10 +13,14 @@ namespace Aurelia.App.Controllers
     {
         private ApplicationDbContext _aureliaDb;
         private UserManager<AureliaUser> _userManager;
+       
+        
+
         public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager)
         {
             _aureliaDb = aureliaDb;
             _userManager = userManager;
+          
         }
 
         [Route("Index")]
@@ -29,19 +33,30 @@ namespace Aurelia.App.Controllers
         }
 
         [Route("Checkout")]
+        
         public IActionResult Checkout()
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
+            List<OrderDetails> ordersDetail =_aureliaDb.OrderDetails.ToList();
             if (cart != null)
             {
                 List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+               
                 if (dataCart.Count > 0)
                 {
                     ViewBag.carts = dataCart;
                     ViewBag.total = dataCart.Sum(item => item.Product.Price * item.quantity);
+                    foreach (var item in dataCart)
+                    {
+                        Product product = _aureliaDb.Products.FirstOrDefault(x => x.Id == item.Product.Id);
+                        product.Quantity -= 1;
+                        _aureliaDb.Update(product);
+                        _aureliaDb.SaveChanges();
+                    }
                     return View();
+                    
                 }
             }
             if (cart == null)
@@ -49,6 +64,7 @@ namespace Aurelia.App.Controllers
                 ViewBag.carts = new List<ShoppingCartItem>();
                 ViewBag.total = 0;
             }
+            
             return View();
         }
 
@@ -73,15 +89,18 @@ namespace Aurelia.App.Controllers
                     order.UserId = user.Id;
                     orderDetails.ProductId = product.Product.Id;
                     order.OrderDetails.Add(orderDetails);
+                    
                 }
 
             }
+            
             order.Id = GetOrderNumber();
             _aureliaDb.Orders.Add(order);
             await _aureliaDb.SaveChangesAsync();
             List<ShoppingCartItem> cart2 = new List<ShoppingCartItem>();
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart2));
-            return View("Index");
+
+            return RedirectToAction(nameof(Index));
         }
 
         public string GetOrderNumber()

@@ -1,34 +1,41 @@
-﻿
-<div class="row">
-    <div class="col-8">
-        <h1 class="text-info">Order Manager</h1>
+﻿@using Microsoft.AspNetCore.Identity
+@if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
+{
+    <div class="row">
+        <div class="col-8">
+            <h1 class="text-info">Order Manager</h1>
+        </div>
     </div>
-</div>
-<br />
-<div>
-    <table class="table table-stripped-border" style="color:black">
-        <tr>
-            <th>Id</th>
-            <th>UserId</th>
-            <th>date_placed</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>PhoneNumber</th>
-            <th>PaymentMethod</th>
-            <th>DeliveryMethod</th>
-        </tr>
-        @foreach (var item in (List<Order>)(@ViewData["orders"]))
-        {
+    <br />
+    <div>
+        <table class="table table-stripped-border" style="color:black">
             <tr>
-                <td style="color:black">@item.Id</td>
-                <td style="color:black">@item.UserId</td>
-                <td style="color:black">@item.date_placed</td>
-                <td style="color:black">@item.Email</td>
-                <td style="color:black">@item.Address</td>
-                <td style="color:black">@item.PhoneNumber</td>
-                <td style="color:black">@item.PaymentMethod</td>
-                <td style="color:black">@item.DeliveryMethod</td>
+                <th>Id</th>
+                <th>UserId</th>
+                <th>date_placed</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>PhoneNumber</th>
+                <th>PaymentMethod</th>
+                <th>DeliveryMethod</th>
             </tr>
-        }
-    </table>
-    </div>
+            @foreach (var item in (List<Order>)(@ViewData["orders"]))
+            {
+                <tr>
+                    <td style="color:black">@item.Id</td>
+                    <td style="color:black">@item.UserId</td>
+                    <td style="color:black">@item.date_placed</td>
+                    <td style="color:black">@item.Email</td>
+                    <td style="color:black">@item.Address</td>
+                    <td style="color:black">@item.PhoneNumber</td>
+                    <td style="color:black">@item.PaymentMethod</td>
+                    <td style="color:black">@item.DeliveryMethod</td>
+                </tr>
+            }
+        </table>
+        </div>
+}
+else
+{
+    <h1>Thank you for your order!</h1>
+}

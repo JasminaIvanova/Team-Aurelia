@@ -104,10 +104,11 @@
         }
     </table>
     <a class="btn btn-info" asp-controller="Cart" asp-action="Index"> Back to Cart</a>
-    <input class="btn btn-info" type="submit" value="Place Order"/>
+    <input class="btn btn-info" type="submit"  value="Place Order"/>
+    
     <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
             Total: @ViewBag.total.ToString("$0.00")
-        </div>
+    </div>
 @section Scripts
 {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
