@@ -26,6 +26,7 @@ namespace Aurelia.App.Controllers
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
+            
             if (cart != null)
             {
                 List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
@@ -40,7 +41,7 @@ namespace Aurelia.App.Controllers
             {
                 ViewBag.carts = new List<ShoppingCartItem>();
                 ViewBag.total = 0;
-                return View("/Views/Home/Index.cshtml");
+                return View("/Views/Cart/empty.cshtml");
             }
             return View();
         }
