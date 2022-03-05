@@ -131,9 +131,10 @@ namespace Aurelia.App.Controllers
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
-            List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+            
             if (cart != null)
             {
+                List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
                 for (int i = 0; i < dataCart.Count; i++)
                 {
                     if (dataCart[i].Product.Id == id)
@@ -152,7 +153,7 @@ namespace Aurelia.App.Controllers
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View("/Views/Cart/empty.cshtml");
         }
     }
 }
