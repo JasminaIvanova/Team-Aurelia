@@ -17,6 +17,7 @@ namespace Aurelia.App.Models
         public string Email { get; set; }
         [Required]
         [Phone]
+        [StringLength(13, MinimumLength = 10)]
         [Display(Name = "Phone Number:")]
         public string PhoneNumber { get; set; }
         [Display(Name = "Payment Method:")]

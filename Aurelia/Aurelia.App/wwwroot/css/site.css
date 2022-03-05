@@ -25,6 +25,13 @@ body {
     margin-bottom: -20px;
 }
 
+footer {
+    position: absolute;
+    bottom: 0px;
+    height: 8px;
+    line-height: 55px;
+    width: 170%;
+}
 
 .customBTN {
     text-align:right;
