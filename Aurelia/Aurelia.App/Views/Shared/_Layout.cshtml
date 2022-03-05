@@ -39,25 +39,25 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" style="background-color:#c5c6c7">
-            <div class="container-fluid">
+            <div class="container-fluid ">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color:#094b65; font-weight:700; font-size:2em; text-decoration:none">Aurelia</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item dropdown">
-                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" style="background-color:#1f2833">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between justify-content-center">
+                    <ul class="navbar-nav" style="margin-bottom:0px; margin-top:20px">
+                        <li class="nav-item dropdown" style="display:inline-block;vertical-align: middle" >
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" style="background-color:#1f2833; border-radius:20px">
 		                            <i class="fas fa-bars" style="color:#66fcf1"></i>
 	                             </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-	                                <li><a class="dropdown-item"  asp-controller="Home" asp-action="Index">
+	                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Index">
                                        Home
                                     </a></li>
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
                                     {
-                                        <li><a class="dropdown-item" asp-controller="ProductCategory" asp-action="Index">
+                                        <li><a class="dropdown-item"  asp-controller="ProductCategory" asp-action="Index">
                                             Product Category
                                         </a>
                                         </li>
@@ -74,14 +74,14 @@
                                 @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
                                 {
                                     <li class="nav-item" >
-                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1 " asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
+                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1; border-radius:20px" asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
                                         </a>    
                                     </li>
                                 }
                                 <form asp-controller="Client" asp-action="Index">
                                     <p>
-                                        <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; color:black;" placeholder="Search..."/>
-                                        <button type="submit" class="btn btn-secondary" style="background-color:#1f2833">
+                                        <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; margin-top:1px;color:black; border-radius:20px" placeholder="Search..."/>
+                                        <button type="submit" class="btn btn-secondary" style="background-color:#1f2833; border-radius:20px; margin-top:1px;">
                                             <i class="fas fa-search" style="color:#66fcf1"></i>
                                         </button>
                                     </p>
@@ -89,7 +89,7 @@
                          </li>
                     </ul>
                     @if (SignInManager.IsSignedIn(User)){
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav ms-auto">
                             <li class="nav-item" >
                                 <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | $@sumCart.ToString("0.00")</i></a>    
                             </li>

@@ -9,13 +9,14 @@ namespace Aurelia.App.Models
             OrderDetails = new List<OrderDetails>();
         }
         public string UserId { get; set; }
-        public AureliaUser  AureliaUser { get; set; }
+        public AureliaUser AureliaUser { get; set; }
         public DateTime date_placed { get; set; }
         public string Status { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]
+        [Phone]
         [Display(Name = "Phone Number:")]
         public string PhoneNumber { get; set; }
         [Display(Name = "Payment Method:")]

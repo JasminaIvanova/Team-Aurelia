@@ -8,24 +8,25 @@
 
 <div class="row">
     <div class="col-8">
-        <h1 class="text-info">Product Manager</h1>
+        <h1 style="color:#094b65">Product Manager</h1>
     </div>
-     <div class="col-7 text-right" style="color:black">
-         <a asp-action="CreateProduct" class="btn btn-info"> <i class="fas fa-plus"></i>Create Product</a>
+     <div class="col-7 text-right  d-sm-inline-flex justify-content-between " style="color:black">
+         <a asp-action="CreateProduct" class="btn " style="background-color:#1f2833;color: #66fcf1; height:39px"> <i class="fas fa-plus"></i>Create Product</a>
+        <form asp-controller="Product" asp-action="Index">
+            <p>
+                <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; color:black; border-radius:20px" placeholder="Search..."/>
+                <button type="submit" class="btn" style="background-color:#1f2833;border-radius:20px ">
+                    <i class="fas fa-search" style="color: #66fcf1;"></i>
+                </button>
+            </p>
+        </form>
      </div>
 </div>
 <br />
-<form asp-controller="Product" asp-action="Index">
-    <p>
-        <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; color:black;" placeholder="Search..."/>
-        <button type="submit" class="btn btn-info">
-            <i class="fas fa-search" style="color:black"></i>
-        </button>
-    </p>
-</form>
+
 <div>
     <table class="table table-stripped-border" style="color:black">
-        <tr class="table-info" style="color:black">
+        <tr  style="color:black">
             <th>
                 @Html.DisplayNameFor(x => x.Image)
             </th>
@@ -61,9 +62,9 @@
                 <td style="color:black">@p.Price.ToString("0.00")</td>
                 <td style="color:black">@p.Quantity</td>
                 <td>
-                    <a asp-action="EditProduct" asp-route-id="@p.Id" class="btn btn-info">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-info">Details</a> 
-                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-info">Delete</a> 
+                    <a asp-action="EditProduct" asp-route-id="@p.Id" class="btn " style="background-color:#1f2833;color: #66fcf1;">Edit</a> 
+                    <a asp-action="Details" asp-route-id="@p.Id" class="btn " style="background-color:#1f2833;color: #66fcf1;">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn " style="background-color:#1f2833;color: #66fcf1;">Delete</a> 
                 </td>
             </tr>
         }
