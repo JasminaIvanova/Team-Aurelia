@@ -28,6 +28,8 @@ namespace Aurelia.App.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
+            ViewData["products"] = _aureliaDB.Products.ToList();
             return View();
         }
 

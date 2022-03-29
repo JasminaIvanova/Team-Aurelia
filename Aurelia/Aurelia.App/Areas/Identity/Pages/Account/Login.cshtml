@@ -4,8 +4,10 @@
 @{
     ViewData["Title"] = "Log in";
 }
-
+<head>
 <h1 style="text-align: center">@ViewData["Title"]</h1>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
 <div class="row" style="justify-content:center">
     <div class="col-md-4" >
         <section>
@@ -38,10 +40,48 @@
                     <p>
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
                     </p>
-                   
                 </div>
             </form>
         </section>
+
+        <setcion>
+            <hr />
+            @{
+                if (Model.ExternalLogins.Count == 0)
+                {
+                    <div>
+                    <p>
+                    There are no external authentication services configured.
+                    </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                    <p>
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                    if (@provider.DisplayName == "Google")
+                                    {
+                                        <button type="submit" class="btn btn-secondary" style="background-color:#1f2833; border-radius:20px; margin-top:1px" name="provider" value="@provider.Name" title="Log in using @provider.DisplayName account.">
+                                            <i class="fab fa-google fa-2x" style="color:#66fcf1"></i>
+                                        </button>
+                                    }
+                                    else {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using @provider.DisplayName account.">@provider.DisplayName
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                    }
+                                }
+                        </p>
+                    </div>
+                    </form>
+                }
+
+                }
+        </setcion>
+
     </div>
 </div>
 

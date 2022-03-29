@@ -2,6 +2,7 @@ using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -20,13 +21,20 @@ namespace Aurelia.App
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddMvc();
             builder.Services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+            });
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                options.SignInScheme = IdentityConstants.ExternalScheme;
             });
             builder.Services.AddDefaultIdentity<AureliaUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
             var app = builder.Build();
             CreateUserAndRoles(app);
             // Configure the HTTP request pipeline.
@@ -52,6 +60,7 @@ namespace Aurelia.App
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseSession();
@@ -59,6 +68,7 @@ namespace Aurelia.App
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
 
            
