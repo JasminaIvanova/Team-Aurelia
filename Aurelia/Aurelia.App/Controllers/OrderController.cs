@@ -1,26 +1,27 @@
 ﻿using Aurelia.App.Data;
 using Aurelia.App.Models;
+using Aurelia.App.Reports;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace Aurelia.App.Controllers
 {
     [Route("Order")]
-    public class OrderController:Controller
+    public class OrderController : Controller
     {
         private ApplicationDbContext _aureliaDb;
         private UserManager<AureliaUser> _userManager;
-       
-        
+        private readonly IWebHostEnvironment _oHostEnvironment;
+        public List<string> orderDetailsForPDF = new List<string>();
 
-        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager)
+
+        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager, IWebHostEnvironment oHostEnvironment)
         {
             _aureliaDb = aureliaDb;
             _userManager = userManager;
-          
+            _oHostEnvironment = oHostEnvironment;
         }
 
         [Route("Index")]
@@ -33,17 +34,17 @@ namespace Aurelia.App.Controllers
         }
 
         [Route("Checkout")]
-        
+
         public IActionResult Checkout()
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
-            List<OrderDetails> ordersDetail =_aureliaDb.OrderDetails.ToList();
+            List<OrderDetails> ordersDetail = _aureliaDb.OrderDetails.ToList();
             if (cart != null)
             {
                 List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
-               
+
                 if (dataCart.Count > 0)
                 {
                     ViewBag.carts = dataCart;
@@ -56,7 +57,7 @@ namespace Aurelia.App.Controllers
                         _aureliaDb.SaveChanges();
                     }
                     return View();
-                    
+
                 }
             }
             if (cart == null)
@@ -64,13 +65,13 @@ namespace Aurelia.App.Controllers
                 ViewBag.carts = new List<ShoppingCartItem>();
                 ViewBag.total = 0;
             }
-            
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(Order order)
+        public async Task<IActionResult> Checkout(Order order, int param)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
@@ -89,19 +90,19 @@ namespace Aurelia.App.Controllers
                     order.UserId = user.Id;
                     orderDetails.ProductId = product.Product.Id;
                     order.OrderDetails.Add(orderDetails);
-                    
+
                 }
 
             }
-            
+
             order.Id = GetOrderNumber();
             _aureliaDb.Orders.Add(order);
             await _aureliaDb.SaveChangesAsync();
             List<ShoppingCartItem> cart2 = new List<ShoppingCartItem>();
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart2));
-
             return RedirectToAction(nameof(Index));
         }
+        
 
         public string GetOrderNumber()
         {
@@ -110,5 +111,7 @@ namespace Aurelia.App.Controllers
             int rowCount = _aureliaDb.Orders.ToList().Count() + 1;
             return rowCount.ToString("000");
         }
+
+       
     }
 }

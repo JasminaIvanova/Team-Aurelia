@@ -5,6 +5,7 @@
         public Base()
         {
             this.Id = Guid.NewGuid().ToString();
+        
         }
         public string Id { get; set; }
     }

@@ -38,4 +38,12 @@
 else
 {
     <h1>Thank you for your order!</h1>
+    <button id="btnPdf" style="background-color:#1f2833; color:#66fcf1; border-radius:10px">Generate receipt</button>
 }
+
+<script type="text/javascript">
+    $('#btnPdf').click(function(){
+    $('#btnPdf').click(function(){
+        window.open('../../Receipt/PrintOrder?param=1','_blank');
+    });
+</script>
