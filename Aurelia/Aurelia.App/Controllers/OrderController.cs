@@ -2,6 +2,7 @@
 using Aurelia.App.Models;
 using Aurelia.App.Reports;
 using Aurelia.App.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Aurelia.App.Controllers
 {
+    [Authorize]
     [Route("Order")]
     public class OrderController : Controller
     {

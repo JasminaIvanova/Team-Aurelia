@@ -71,14 +71,31 @@
                                         </li>
                                     }
 	                            </ul>
-                                @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
-                                {
-                                    <li class="nav-item" >
-                                        <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1; border-radius:20px" asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
-                                        </a>    
-                                    </li>
-                                }
-                                <form asp-controller="Client" asp-action="Index">
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" style="background-color:#1f2833; border-radius:20px">
+		                           Product Categories
+	                             </button>
+                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
+                                        {
+                                            
+	                                        <li><a class="dropdown-item"  asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
+                                            </a>  </li>
+                                            
+                                        }
+                                 </ul>
+                                @*<div class="dropdown">
+                                  <button class="dropbtn">Product Categories</button>
+                                  <div class="dropdown-content">
+                                     @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
+                                        {
+                                            <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1" asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
+                                            </a>    
+                                        }
+                                  </div>
+                                </div>*@
+                                
+                         </li>
+                         <form asp-controller="Client" asp-action="Index">
                                     <p>
                                         <input class="btn btn-secondary" type="text" name="searchString" style="background-color:white; margin-left:5px; margin-top:1px;color:black; border-radius:20px" placeholder="Search..."/>
                                         <button type="submit" class="btn btn-secondary" style="background-color:#1f2833; border-radius:20px; margin-top:1px;">
@@ -86,15 +103,14 @@
                                         </button>
                                     </p>
                                 </form>
-                         </li>
                     </ul>
-                    @if (SignInManager.IsSignedIn(User)){
+                    @*@if (SignInManager.IsSignedIn(User)){*@
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item" >
                                 <a class="nav-link text-dark" style="font-size:20px" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"> | $@sumCart.ToString("0.00")</i></a>    
                             </li>
                         </ul>
-                    }
+                    @*}*@
                     <partial name="_LoginPartial" />
                 </div>
             </div>

@@ -3,8 +3,11 @@ using Aurelia.App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using System.Diagnostics;
 using System.Dynamic;
+using Microsoft.Extensions.Configuration;
+
 
 namespace Aurelia.App.Controllers
 {
@@ -12,18 +15,38 @@ namespace Aurelia.App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private ApplicationDbContext _aureliaDB;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext aureliaDB)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext aureliaDB, IConfiguration configuration)
         {
             _logger = logger;
             _aureliaDB = aureliaDB;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
             ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
             ViewData["products"] = _aureliaDB.Products.ToList();
-            return View(_aureliaDB.Products.ToList());
+            string conn = _configuration.GetConnectionString("DefaultConnection");
+            string sql = "SELECT ProductId, count(*) as c FROM aurelia.OrderDetails group by ProductId order by c desc limit 6";
+            MySqlCommand cmd = new MySqlCommand(sql);
+            cmd.Connection = new MySqlConnection(conn);
+            cmd.Connection.Open();
+            cmd.CommandType = System.Data.CommandType.Text;
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            List<Product> products = new List<Product>();
+            List<string> productsid = new List<string>();
+            while (rdr.Read()) 
+            {
+                productsid.Add((string)rdr["ProductId"]);
+            }
+            foreach (var item in productsid)
+            {
+                Product prod = _aureliaDB.Products.Where(x => x.Id == item).FirstOrDefault();
+                products.Add(prod);
+            }
+            return View(products);
         }
 
         public IActionResult Privacy()

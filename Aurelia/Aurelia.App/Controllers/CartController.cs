@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 namespace Aurelia.App.Controllers
 {
     
-    [Authorize]
     [Route("Cart")]
     public class CartController : Controller
     {
