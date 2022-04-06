@@ -13,6 +13,8 @@ namespace Aurelia.App.Reports
         List<Product> _productOrd = new List<Product>();
         public byte[] Report(Order detForOrd, List<Product> productOrd)
         {
+            BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+            Font tablefont = new Font(bfTimes, 20);
             _detForOrder = detForOrd;
             _productOrd = productOrd;
             _document = new Document();
@@ -23,7 +25,7 @@ namespace Aurelia.App.Reports
             _document.SetMargins(5f, 5f, 20f, 5f);
 
             PdfPTable table = new PdfPTable(2);
-            PdfPCell cell = new PdfPCell(new Phrase("Order details"));
+            PdfPCell cell = new PdfPCell(new Phrase("Order details", tablefont));
             cell.Colspan = 2;
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
@@ -43,14 +45,14 @@ namespace Aurelia.App.Reports
             table.AddCell("Delivery method");
             table.AddCell(_detForOrder.DeliveryMethod);
 
-            PdfPCell cellProd = new PdfPCell(new Phrase("Products"));
+            PdfPCell cellProd = new PdfPCell(new Phrase("Products", tablefont));
             cellProd.Colspan = 2;
             cellProd.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cellProd);
             foreach (var item in _productOrd) 
             {
                 table.AddCell(item.ProductName);
-                table.AddCell("Quantity: ");
+                table.AddCell("Quantity: "+ item.Quantity);
             }
             _document.Add(table);
             _document.Close();

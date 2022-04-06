@@ -23,8 +23,10 @@ namespace Aurelia.App.Controllers
             foreach (var item in orderdet) 
             {
                 Product prod = _aureliaDb.Products.Where(x => x.Id == item.ProductId).FirstOrDefault();
+                prod.Quantity = item.Quantity;
                 products.Add(prod);
             }
+
             OrderReport rpt = new OrderReport();
             return File(rpt.Report(detailsForLastOrder, products), "application/pdf");
         }

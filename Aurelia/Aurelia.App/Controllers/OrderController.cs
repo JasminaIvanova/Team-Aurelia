@@ -1,6 +1,7 @@
 ﻿using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Aurelia.App.Reports;
+using Aurelia.App.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,14 +15,14 @@ namespace Aurelia.App.Controllers
         private ApplicationDbContext _aureliaDb;
         private UserManager<AureliaUser> _userManager;
         private readonly IWebHostEnvironment _oHostEnvironment;
-        public List<string> orderDetailsForPDF = new List<string>();
+        private readonly IEmailService emailService;
 
-
-        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager, IWebHostEnvironment oHostEnvironment)
+        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager, IWebHostEnvironment oHostEnvironment, IEmailService emailService)
         {
             _aureliaDb = aureliaDb;
             _userManager = userManager;
             _oHostEnvironment = oHostEnvironment;
+            this.emailService = emailService;
         }
 
         [Route("Index")]
@@ -90,7 +91,7 @@ namespace Aurelia.App.Controllers
                     order.UserId = user.Id;
                     orderDetails.ProductId = product.Product.Id;
                     order.OrderDetails.Add(orderDetails);
-
+                    orderDetails.Quantity = product.quantity;
                 }
 
             }
@@ -98,6 +99,14 @@ namespace Aurelia.App.Controllers
             order.Id = GetOrderNumber();
             _aureliaDb.Orders.Add(order);
             await _aureliaDb.SaveChangesAsync();
+            this.emailService.SendEmail(new Message((new string[] { order.Email }).ToList(), "Information for order №" + order.Id,
+                $"Thank you for your order! \n\n" +
+                $"Your order details are displayed below :)\n" +
+                $"Date placed: {order.date_placed} \n" +
+                $"Status: {order.Status} \n" +
+                $"Payment method: {order.PaymentMethod} \n" +
+                $"Address:{order.Address} \n" +
+                $"Delivery method: {order.DeliveryMethod} \nPhone number:  {order.PhoneNumber}"));
             List<ShoppingCartItem> cart2 = new List<ShoppingCartItem>();
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart2));
             return RedirectToAction(nameof(Index));
@@ -112,6 +121,7 @@ namespace Aurelia.App.Controllers
             return rowCount.ToString("000");
         }
 
-       
+
+
     }
 }

@@ -1,5 +1,6 @@
 using Aurelia.App.Data;
 using Aurelia.App.Models;
+using Aurelia.App.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,6 +14,13 @@ namespace Aurelia.App
         public static void Main(string[] args) 
         {
             var builder = WebApplication.CreateBuilder(args);
+            var emailConfig = builder.Configuration
+            .GetSection("GmailConf")
+            .Get<GmailConf>();
+
+            builder.Services.AddSingleton(emailConfig);
+
+            builder.Services.AddTransient<IEmailService, EmailService>();
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
