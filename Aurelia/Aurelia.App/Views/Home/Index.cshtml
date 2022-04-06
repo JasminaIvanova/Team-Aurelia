@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="ms-auto" style="text-align:center">
-    <h2 style="font-family:'Calibri', sans-serif; font-weight:inherit;background-color:#c5c6c7;">Bestseller products</h2>
+<body style="background-color:#Adc4e2">
+    <div class="ms-auto" style="text-align:center">
+    <h3 style="background-color:white; font-family:'Arial Rounded MT'; font-weight:100">Bestseller products</h3>
 </div>
 <div class = "row">
     @foreach (var product in Model)
@@ -22,9 +22,11 @@
                         <label style="font-size: 18px; color:black">Price: $@product.Price.ToString("0.00")</label>
                  </h5>
                   <div>
-                    <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
+                    <a style="margin-top: 1vw;  font-size:14px; background-color:black; color:white; font-family:'Arial Rounded MT'" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
                  </div>
             </div>
             </div>
     }
 </div>
+</body>
+
