@@ -11,7 +11,7 @@ namespace Aurelia.App
 {
     public class Program 
     {
-        public static void Main(string[] args) 
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             var emailConfig = builder.Configuration
@@ -21,6 +21,15 @@ namespace Aurelia.App
             builder.Services.AddSingleton(emailConfig);
 
             builder.Services.AddTransient<IEmailService, EmailService>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>(i =>
+                new EmailSender(
+                    builder.Configuration["GmailConf:SmtpClient"],
+                    builder.Configuration.GetValue<int>("GmailConf:Port"),
+                    enableSSL: true,
+                    builder.Configuration["GmailConf:Username"],
+                    builder.Configuration["GmailConf:Password"]
+                )
+            );
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -39,7 +48,11 @@ namespace Aurelia.App
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
                 options.SignInScheme = IdentityConstants.ExternalScheme;
             });
-            builder.Services.AddDefaultIdentity<AureliaUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
+            builder.Services.AddDefaultIdentity<AureliaUser>(options => {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedAccount = true;
+            })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 

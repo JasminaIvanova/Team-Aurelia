@@ -30,21 +30,26 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
         private readonly UserManager<AureliaUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<AureliaUser> _userStore;
+        private readonly IUserEmailStore<AureliaUser> _emailStore;
         private readonly ApplicationDbContext _aureliaDB;
-      
+        private readonly IEmailSender _emailSender;
+
 
         public RegisterModel(
             UserManager<AureliaUser> userManager,
             IUserStore<AureliaUser> userStore,
             RoleManager<IdentityRole> roleManager,
             SignInManager<AureliaUser> signInManager,
-            ApplicationDbContext aureliaDB)
+            ApplicationDbContext aureliaDB,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _userStore = userStore;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _emailStore = GetEmailStore();
             _aureliaDB = aureliaDB;
+            _emailSender = emailSender;
            
         }
 
@@ -90,14 +95,18 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string returnUrl = null)
         {
             ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
+            ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            returnUrl ??= Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ViewData["productCategory"] = _aureliaDB.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDB.ProductCategories.ToList(), "Id", "Name");
 
@@ -123,12 +132,33 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
                
 
                 await _userStore.SetUserNameAsync(user , Input.UserName, CancellationToken.None);
-                
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToPage("/Account/Login");
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
                 }
                 foreach (var error in result.Errors)
                 {
@@ -150,6 +180,15 @@ namespace Aurelia.App.Areas.Identity.Pages.Account
 
 
             }
+        }
+
+        private IUserEmailStore<AureliaUser> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<AureliaUser>) _userStore;
         }
 
     }
