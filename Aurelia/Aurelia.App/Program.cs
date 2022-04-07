@@ -61,6 +61,7 @@ namespace Aurelia.App
             builder.Services.AddDefaultIdentity<AureliaUser>(options => {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedAccount = true;
+                options.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
