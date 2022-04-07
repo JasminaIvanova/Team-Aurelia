@@ -1,11 +1,12 @@
 ﻿@page
 @model Aurelia.App.Areas.Identity.Pages.Account.ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "Confirm Email | ";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>Confirm Email</h1>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div>
 <a class="btn btn-secondary" type="button"  style="background-color:black; border-color:transparent; color:white; font-family:'Arial Rounded MT'" asp-area="Identity" asp-page="/Account/Login">Login</a>
+<a class="btn btn-secondary" type="button"  style="background-color:black; border-color:transparent; color:white; font-family:'Arial Rounded MT'" asp-area="Identity" asp-page="/Account/ResendEmailConfirmation">Resend Email</a>
 </div>
