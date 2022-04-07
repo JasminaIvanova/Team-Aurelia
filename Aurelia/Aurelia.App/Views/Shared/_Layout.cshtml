@@ -83,16 +83,7 @@
                                             
                                         }
                                  </ul>
-                                @*<div class="dropdown">
-                                  <button class="dropbtn">Product Categories</button>
-                                  <div class="dropdown-content">
-                                     @foreach (var item in (List<ProductCategory>)(@ViewData["productCategory"]))
-                                        {
-                                            <a class="btn btn-secondary" type="button" style="background-color:#1f2833; color:#66fcf1" asp-controller="Client" asp-action="Index" asp-route-id="@item.Id">@item.Name
-                                            </a>    
-                                        }
-                                  </div>
-                                </div>*@
+                                
                                 
                          </li>
                          <form asp-controller="Client" asp-action="Index">

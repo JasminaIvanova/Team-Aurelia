@@ -155,6 +155,10 @@ a {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
+.navbar a:hover {
+    background: #745c9c;
+    color: black;
+}
 
 
 
