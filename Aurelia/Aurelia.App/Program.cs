@@ -42,11 +42,21 @@ namespace Aurelia.App
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
+             o.TokenLifespan = TimeSpan.FromMinutes(15));
+
             builder.Services.AddAuthentication().AddGoogle(options =>
             {
                 options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
                 options.SignInScheme = IdentityConstants.ExternalScheme;
+            });
+            builder.Services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+                options.AccessDeniedPath = "/AccessDeniedPathInfo";
             });
             builder.Services.AddDefaultIdentity<AureliaUser>(options => {
                 options.SignIn.RequireConfirmedEmail = true;
