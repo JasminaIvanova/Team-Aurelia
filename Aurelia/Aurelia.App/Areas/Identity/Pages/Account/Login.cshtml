@@ -2,10 +2,10 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Log in | ";
 }
 <head>
-<h1 style="text-align: center">@ViewData["Title"]</h1>
+<h1 style="text-align: center">Log in</h1>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <div class="row" style="justify-content:center">
@@ -36,10 +36,11 @@
                 <div>
                     <button id="login-submit" type="submit" style="background-color:#1f2833;color: #66fcf1" class="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
+                <hr />
                 <div>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
+                        <a class="btn btn-secondary" type="button" style="background-color:black; border-color:transparent; color:white;" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+                        <a class="btn btn-secondary" type="button" style="background-color:black; border-color:transparent; color:white;" asp-page="./ForgotPassword">Forgot Password</a>
+                        <a class="btn btn-secondary" type="button" style="background-color:black; border-color:transparent; color:white;" asp-page="./ResendEmailConfirmation">Resend Confirm Email</a>
                 </div>
             </form>
         </section>

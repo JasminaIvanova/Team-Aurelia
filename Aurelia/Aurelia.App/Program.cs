@@ -1,3 +1,4 @@
+using AspNetCore.ReCaptcha;
 using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Aurelia.App.Services;
@@ -42,6 +43,8 @@ namespace Aurelia.App
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            builder.Services.AddReCaptcha(builder.Configuration.GetSection("ReCaptcha"));
 
             builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
              o.TokenLifespan = TimeSpan.FromMinutes(15));
