@@ -89,6 +89,7 @@ a {
     margin: 5px 0px 0px 0px;
     text-align: left;
     left:45%;
+    font-size:15px;
 }
 
 .col-xs-6 {
@@ -159,7 +160,28 @@ a {
     background: #745c9c;
     color: black;
 }
-
+.container#blur.active {
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 830px;
+    object-fit: contain;
+    padding:50px;
+    box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    background: #fff;
+}
+#popup.active {
+    top:50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
 
 
 

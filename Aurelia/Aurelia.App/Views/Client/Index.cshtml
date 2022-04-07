@@ -6,7 +6,8 @@
 
 <br/> <br/>
 <body>
-    @try
+    <div class="container" id="blur">
+        @try
     {
         <div class="ms-auto" style="text-align:center">
             <h3 style="background-color:white; border: 2px solid #745c9c;
@@ -36,17 +37,27 @@
                             <label style="font-size: 18px; color:black">Price: $@product.Price.ToString("0.00")</label>
                         </h5>
                         <div>
-                            <a style="margin-top: 1vw;  font-size:14px; background-color:black; color:white; font-family:'Arial Rounded MT'" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
+                            <a onclick="toggle()" style="margin-top: 1vw;  font-size:14px; background-color:black; color:white; font-family:'Arial Rounded MT'" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@product.Id">Buy</a>
                         </div>
                     </div>
                 </div>
             }
-
         }
         catch
         {
             <h1>Bad request</h1>
         }
-
     </div>
+    </div>
+    <script type="text/javascript">
+        function toggle()
+        {
+            var blur = document.getElementById('blur');
+            blur.classList.toggle('active')
+            var popup = document.getElementById('popup');
+            popup.classList.toggle('active')
+        }
+         
+    </script>
 </body>
+    
