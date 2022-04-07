@@ -2,8 +2,11 @@
 @{
     ViewData["Title"] = "buyProduct Page";
 }
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <div id="popup">
+    <a class="btn btn-secondary" type="button" id="dropdownMenuButton1"  aria-expanded="false" aria-haspopup="true" style=" background-color:transparent;border-color:transparent; color:white; position: fixed;top: 0;left: 95%; text-align:left ;font-family:'Arial Rounded MT'" asp-controller="Client" asp-action="Index" asp-route-id="@Model.ProductCategory.Id">
+    <i class="fa-solid fa-xmark" style="color:grey"></i>
+	</a>
     <img src="~/images/@Model.Image" style="max-width:40%; width:auto;height: 40%; object-fit: contain"/>
     <div class="col-xs-5 flex" >
         <h2 class="customH1" style="font-family:'Raleway'; font-size: 2em; font-weight: bold">@Model.ProductName</h2>
@@ -33,15 +36,16 @@
                 @*<a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Client" asp-action="BuyProduct" asp-route-id="@Model.Id">Buy</a>*@
                 @if (@Model.Quantity > 0)
                 {
-                    <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#66fcf1" class=" w-100 btn btn-lg btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to Cart </a>
+                    <a style="margin-top: 1vw;  font-size:14px; background-color:black; color:white" class=" w-100 btn btn-lg " asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to Cart </a>
                 }
                 else
                 {
-                     <a style="margin-top: 1vw;  font-size:14px; background-color:#1f2833; color:#c5c6c7" class=" w-100 btn btn-lg btn-primary">Not Available</a>
+                     <a style="margin-top: 1vw;  font-size:14px; background-color:black; color:white; color:#c5c6c7" class=" w-100 btn btn-lg btn-primary">Not Available</a>
                 }
             </div>
         </div>
     </div>
+    
  </div> 
             
 <script>

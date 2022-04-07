@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Aurelia.App
 {
-    public class Program 
+    public class Program
     {
         public static void Main(string[] args)
         {
@@ -61,6 +61,7 @@ namespace Aurelia.App
             builder.Services.AddDefaultIdentity<AureliaUser>(options => {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedAccount = true;
+                options.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -102,7 +103,7 @@ namespace Aurelia.App
 
             app.MapRazorPages();
 
-           
+
 
             app.Run();
 
@@ -112,9 +113,9 @@ namespace Aurelia.App
         {
             using (var scope = app.Services.CreateScope())
             {
-                using (var aureliaDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>()) 
+                using (var aureliaDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
-                    if (!aureliaDbContext.Roles.Any()) 
+                    if (!aureliaDbContext.Roles.Any())
                     {
                         IdentityRole superadmin = new IdentityRole { Name = "SuperAdmin", NormalizedName = "SUPERADMIN" };
                         IdentityRole user = new IdentityRole { Name = "User", NormalizedName = "USER" };
@@ -122,12 +123,12 @@ namespace Aurelia.App
                         aureliaDbContext.Roles.Add(superadmin);
                         aureliaDbContext.Roles.Add(user);
                     }
-                    
+
                     aureliaDbContext.SaveChanges();
                 }
-            
-            }   
-     
+
+            }
+
         }
     }
 

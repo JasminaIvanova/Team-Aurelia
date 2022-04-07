@@ -62,22 +62,22 @@
                 <td style="color:black">@item.Product.Price.ToString("$0.00")</td> 
                 <td style="color:black"><input type="number" style="border-radius: 10px;"class="@_quantity" value="@item.quantity"/></td>         
                 <td style="color:black">@subTotal.ToString("$0.00")</td>
-                <td><a class="btn btn-info, Update" style="background-color:#1f2833;color: #66fcf1" data-id="@item.Product.Id">Update</a></td>
-                <td><a class="btn btn-info" style="background-color:#1f2833; color: #66fcf1" asp-controller="cart" asp-action="Delete" asp-route-id="@item.Product.Id">Delete</a></td>
+                <td><a class="btn btn-info, Update" style="background-color:black;color: white" data-id="@item.Product.Id">Update</a></td>
+                <td><a class="btn" style="background-color:black ;color: white" asp-controller="cart" asp-action="Delete" asp-route-id="@item.Product.Id">Delete</a></td>
             </tr>
         }
         
         }
     </table>
-    <a class="btn btn-info" style="background-color:#1f2833;color: #66fcf1" asp-controller="home" asp-action="index">Continue Shopping</a>
-        <a class="btn btn-info" style="background-color:#1f2833;color: #66fcf1" asp-controller="order" asp-action="Checkout">Checkout</a>
+    <a class="btn " style="background-color:black;color: white" asp-controller="home" asp-action="index">Continue Shopping</a>
+        <a class="btn " style="background-color:black;color: white" asp-controller="order" asp-action="Checkout">Checkout</a>
 
     }catch
     {
         <div style="text-align: center; margin-top:100px">
             <h1>Empty shopping cart</h1>
             <h5>Add a product before you continue</h5>
-            <a class="btn" style="background-color:#1f2833;color: #66fcf1;" asp-controller="Home" asp-action="Index"> Back to home page</a>
+            <a class="btn" style="background-color:black;color: white" asp-controller="Home" asp-action="Index"> Back to home page</a>
         </div>
     }
 
