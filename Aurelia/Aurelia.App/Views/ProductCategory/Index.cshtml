@@ -5,7 +5,7 @@
 }
 <div class="row">
     <div class="col-6">
-        <h2 style="color:#094b65">Product Categories</h2>
+        <h2 style="color:black">Product Categories</h2>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
                 <td>
                     <div class="customBTN">
                         <form asp-action="DeleteCategory" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn" style="background-color:#1f2833;color: #66fcf1"><i class="fas fa-trash-alt"></i>Delete</button>
+                            <button type="submit" class="btn" style="background-color:black ;color: white"><i class="fas fa-trash-alt"></i>Delete</button>
                         </form>
                     </div>
                 </td>
@@ -27,7 +27,7 @@
         }
     </table>
      <div class="col-6 text-right">
-        <a asp-action="CreateCategory" style="background-color:#1f2833;color: #66fcf1" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Product Category </a>
+        <a asp-action="CreateCategory" style="background-color:black;color: white" class="btn "><i class="fas fa-plus"></i>&nbsp; New Product Category </a>
     </div>
 </div>
 <style>

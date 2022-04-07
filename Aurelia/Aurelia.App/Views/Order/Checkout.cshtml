@@ -25,7 +25,7 @@
         });
     });
 </script>
-<h2 style="color:#094b65">Checkout</h2>
+<h2 style="color:black">Checkout</h2>
 <form asp-action="" method="post"enctype="multipart/form-data">
     <div class="p-4 rounded border">
         <div asp-validation-summary="ModelOnly" class="text-danger">
@@ -104,10 +104,10 @@
         }
         }
     </table>
-    <a class="btn" style="background-color:#1f2833;color: #66fcf1;" asp-controller="Cart" asp-action="Index"> Back to Cart</a>
+    <a class="btn" style=" background-color:black;color: white;" asp-controller="Cart" asp-action="Index"> Back to Cart</a>
     
-    <input class="btn" style="background-color:#1f2833;color: #66fcf1;" type="submit"  value="Place Order"/>
-    <div style="margin-left: 80%; height: 30px; border:1px solid black;"> 
+    <input class="btn" style="background-color:black;color: white;" type="submit"  value="Place Order"/>
+    <div style="margin-left: 80%; height: 30px; border:1px solid black; border-radius:15px; border-color:#745c9c"> 
             Total: @ViewBag.total.ToString("$0.00")
     </div>
 @section Scripts
