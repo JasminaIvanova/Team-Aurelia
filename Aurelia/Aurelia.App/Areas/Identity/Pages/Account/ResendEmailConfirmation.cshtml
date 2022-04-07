@@ -1,5 +1,6 @@
 ﻿@page
 @model Aurelia.App.Areas.Identity.Pages.Account.ResendEmailConfirmationModel
+@using AspNetCore.ReCaptcha
 @{
     ViewData["Title"] = "Resend Email confirmation | ";
 }
@@ -16,7 +17,10 @@
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <hr />
+            <br />
+            @Html.ReCaptcha()
+            <recaptcha />
+            <br />
             <button type="submit" style="background-color:black; border-color:transparent; color:white;" class="w-100 btn btn-lg btn-primary">Resend</button>
         </form>
     </div>

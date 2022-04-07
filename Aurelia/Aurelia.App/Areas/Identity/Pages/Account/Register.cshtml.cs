@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using AspNetCore.ReCaptcha;
 using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -24,6 +25,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Aurelia.App.Areas.Identity.Pages.Account
 {
+    [ValidateReCaptcha]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AureliaUser> _signInManager;
