@@ -56,6 +56,38 @@ day = date.getDate();
 if(day == 30 && month % 2 == 1 )
 {
     month++;
+    day = 2;
+}
+if(day == 30 && month % 2 == 0 )
+{
+    month++;
+    day = 1;
+}
+if(day == 31 && month % 2 == 0 )
+{
+    month++;
+    day = 2;
+}
+if(day == 28 && month == 2 )
+{
+    month++;
+    day = 2;
+}
+else {
+    month = month;
+    year = year;
+    day = day + 2;
+}
+document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year;
+</script>
+<script>
+date = new Date();
+year = date.getFullYear();
+month = date.getMonth() + 1;
+day = date.getDate();
+if(day == 30 && month % 2 == 1 )
+{
+    month++;
     day = 5;
 }
 if(day == 30 && month % 2 == 0 )
@@ -81,5 +113,4 @@ else {
 }
 document.getElementById("current_date_notExpress").innerHTML = "due " + month + "/" + day + "/" + year;
 </script>
-
 
