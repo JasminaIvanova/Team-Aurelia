@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Orders | Admin";
+}
 @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
 {
     <div class="row">
