@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using AspNetCore.ReCaptcha;
 using Aurelia.App.Data;
 using Aurelia.App.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Aurelia.App.Areas.Identity.Pages.Account.Manage
 {
+    [ValidateReCaptcha]
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager<AureliaUser> _userManager;
