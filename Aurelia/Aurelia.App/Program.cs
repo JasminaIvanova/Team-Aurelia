@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Stripe;
 
 namespace Aurelia.App
 {
@@ -43,6 +44,8 @@ namespace Aurelia.App
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            builder.Services.AddSingleton<ChargeService>(new ChargeService());
+            StripeConfiguration.SetApiKey(builder.Configuration["Stripe:TestSecretKey"]);
 
             builder.Services.AddReCaptcha(builder.Configuration.GetSection("ReCaptcha"));
 

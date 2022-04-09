@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Stripe;
 
 namespace Aurelia.App.Controllers
 {
@@ -18,13 +19,15 @@ namespace Aurelia.App.Controllers
         private UserManager<AureliaUser> _userManager;
         private readonly IWebHostEnvironment _oHostEnvironment;
         private readonly IEmailService emailService;
+        public ChargeService _chargeService;
 
-        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager, IWebHostEnvironment oHostEnvironment, IEmailService emailService)
+        public OrderController(ApplicationDbContext aureliaDb, UserManager<AureliaUser> userManager, IWebHostEnvironment oHostEnvironment, IEmailService emailService, ChargeService chargeService)
         {
             _aureliaDb = aureliaDb;
             _userManager = userManager;
             _oHostEnvironment = oHostEnvironment;
             this.emailService = emailService;
+            _chargeService = chargeService;
         }
 
         [Route("Index")]
@@ -33,9 +36,12 @@ namespace Aurelia.App.Controllers
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             ViewData["orders"] = _aureliaDb.Orders.ToList();
+            var cart = HttpContext.Session.GetString("cart");
+            List<ShoppingCartItem> dataCart = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+            
             return View();
         }
-
+        [HttpGet]
         [Route("Checkout")]
 
         public IActionResult Checkout()
@@ -43,6 +49,8 @@ namespace Aurelia.App.Controllers
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
             var cart = HttpContext.Session.GetString("cart");
+            List<ShoppingCartItem> dataCart2 = JsonConvert.DeserializeObject<List<ShoppingCartItem>>(cart);
+            ViewBag.PaymentAmount = (long?)((dataCart2.Sum(item => item.Product.Price * item.quantity)) * 100);
             List<OrderDetails> ordersDetail = _aureliaDb.OrderDetails.ToList();
             if (cart != null)
             {
@@ -54,7 +62,7 @@ namespace Aurelia.App.Controllers
                     ViewBag.total = dataCart.Sum(item => item.Product.Price * item.quantity);
                     foreach (var item in dataCart)
                     {
-                        Product product = _aureliaDb.Products.FirstOrDefault(x => x.Id == item.Product.Id);
+                        Aurelia.App.Models.Product product = _aureliaDb.Products.FirstOrDefault(x => x.Id == item.Product.Id);
                         product.Quantity -= item.quantity;
                         _aureliaDb.Update(product);
                         _aureliaDb.SaveChanges();
@@ -74,7 +82,7 @@ namespace Aurelia.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(Order order, int param)
+        public async Task<IActionResult> Checkout(Aurelia.App.Models.Order order, int param, string stripeEmail, string stripeToken)
         {
             ViewData["productCategory"] = _aureliaDb.ProductCategories.ToList();
             ViewData["productCategorySelectable"] = new SelectList(_aureliaDb.ProductCategories.ToList(), "Id", "Name");
@@ -87,6 +95,8 @@ namespace Aurelia.App.Controllers
                 {
                     OrderDetails orderDetails = new OrderDetails();
                     orderDetails.ProductId = product.ProductId;
+                    order.Email = user.Email;
+                    order.PaymentMethod = "Stripe";
                     order.date_placed = DateTime.Now;
                     order.Status = "Accepted";
                     order.AureliaUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -113,7 +123,6 @@ namespace Aurelia.App.Controllers
             HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart2));
             return RedirectToAction(nameof(Index));
         }
-        
 
         public string GetOrderNumber()
         {
@@ -123,7 +132,8 @@ namespace Aurelia.App.Controllers
             return rowCount.ToString("000");
         }
 
-
-
+       
     }
+
 }
+

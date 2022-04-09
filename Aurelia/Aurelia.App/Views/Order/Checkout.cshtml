@@ -32,15 +32,6 @@
         </div>
         <div class="form-group row">
             <div class="col-2">
-                <label>Email</label>
-            </div>
-            <div class="col-5" style="margin-bottom:1vw">
-                <input asp-for="Email" class="form-control"></input>
-            </div>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="form-group row">
-            <div class="col-2">
                 <label asp-for="PhoneNumber"></label>
             </div>
             <div class="col-5" style="margin-bottom:1vw">
@@ -56,15 +47,6 @@
                 <input asp-for="Address" class="form-control"/>
             </div>
             <span asp-validation-for="Address" class="text-danger"></span>
-        </div>
-         <div class="form-group row">
-            <div class="col-2">
-                <label asp-for="PaymentMethod"></label>
-            </div>
-            <div class="col-5" style="margin-bottom:1vw">
-                <input asp-for="PaymentMethod" class="form-control" />
-            </div>
-            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
         </div>
          <div class="form-group row" style="margin-bottom:1vw">
             <div class="col-2">
@@ -104,9 +86,12 @@
         }
         }
     </table>
+    <div>
     <a class="btn" style=" background-color:black;color: white;" asp-controller="Cart" asp-action="Index"> Back to Cart</a>
     
-    <input class="btn" style="background-color:black;color: white;" type="submit"  value="Place Order"/>
+    <input class="btn" style="background-color:black;color: white;" type="submit" value="Place Order"/>
+
+    </div>
     <div style="margin-left: 80%; height: 30px; border:1px solid black; border-radius:15px; border-color:#745c9c"> 
             Total: @ViewBag.total.ToString("$0.00")
     </div>

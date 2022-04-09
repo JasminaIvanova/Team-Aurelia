@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Payment";
+}
+
+<div>
+    <form method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51KmLApDeHrTmEQHzYI0upLXDU7lHNuztQLBVxxqOxrEeDBrJg6DhFPez8EHwjRraK3MGVL4CSV44pteuWJ5V3Cc500hjcytnWY"
+                data-amount="@ViewBag.PaymentAmount"
+                data-name="Aurelia Shop"
+                data-description="Aurelia Items"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="en"
+                data-zip-code="true"
+                data-label="Pay Now">
+        </script> 
+    </form>
+</div>
