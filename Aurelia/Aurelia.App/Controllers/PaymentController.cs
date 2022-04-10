@@ -1,5 +1,6 @@
 ﻿using Aurelia.App.Data;
 using Aurelia.App.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using Stripe.Checkout;
 
 namespace Aurelia.App.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
         private ApplicationDbContext _aureliaDb;
